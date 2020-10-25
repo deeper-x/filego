@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"log"
 	"os"
@@ -23,17 +24,16 @@ type ResHandler struct {
 // New is the ResHandler builder
 func New(path string) ResHandler {
 	handler := ResHandler{
-		Path:       path,
-		Descriptor: os.O_APPEND | os.O_CREATE | os.O_WRONLY,
-		Mode:       0644,
+		Path: path,
+		Mode: 0644,
 	}
 
 	return handler
 }
 
 // Open file resource
-func (rh *ResHandler) Open() error {
-	f, err := os.OpenFile(rh.Path, rh.Descriptor, rh.Mode)
+func (rh *ResHandler) Open(dsc int) error {
+	f, err := os.OpenFile(rh.Path, dsc, rh.Mode)
 
 	if err != nil {
 		log.Println(err)
@@ -43,6 +43,13 @@ func (rh *ResHandler) Open() error {
 	rh.Resource = f
 
 	return nil
+}
+
+// Close the file handler
+func (rh ResHandler) Close() error {
+	err := rh.Resource.Close()
+
+	return err
 }
 
 // Append line to file
@@ -58,18 +65,39 @@ func (rh ResHandler) Append(toWrite string) (bool, error) {
 	return true, nil
 }
 
-// Close the file handler
-func (rh ResHandler) Close() error {
-	err := rh.Resource.Close()
+// ReadContent read, line by line, file content
+func (rh *ResHandler) ReadContent() []string {
+	var res []string
 
-	return err
+	rh.Descriptor = os.O_RDONLY
+	scanner := bufio.NewScanner(rh.Resource)
+
+	scanner.Split(bufio.ScanLines)
+
+	for scanner.Scan() {
+		log.Println(scanner.Text())
+		res = append(res, scanner.Text())
+	}
+
+	return res
+}
+
+// WriteLines write file line by line
+func (rh *ResHandler) WriteLines(lines []string) {
+	dw := bufio.NewWriter(rh.Resource)
+
+	for _, v := range lines {
+		_, _ = dw.WriteString(v + "\n")
+	}
+
+	dw.Flush()
 }
 
 func main() {
 	o := New("./assets/file_demo.txt")
 
-	o.Open()
-	defer o.Close()
+	// 1 - append
+	o.Open(os.O_APPEND | os.O_CREATE | os.O_WRONLY)
 
 	_, err := o.Append("string one")
 	if err != nil {
@@ -80,4 +108,18 @@ func main() {
 	if err != nil {
 		log.Println(err)
 	}
+
+	o.Close()
+
+	// 2 - read content
+	o.Open(os.O_RDONLY)
+	lines := o.ReadContent()
+	o.Close()
+
+	log.Println(lines)
+
+	// 3 - write lines
+	o.Open(os.O_APPEND | os.O_CREATE | os.O_WRONLY)
+	o.WriteLines([]string{"one", "two", "three", "four"})
+	o.Close()
 }
