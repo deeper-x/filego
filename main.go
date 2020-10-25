@@ -9,7 +9,7 @@ import (
 // FileManager with core behaviours
 type FileManager interface {
 	Append(string) (bool, error)
-	Close()
+	Close() error
 }
 
 // ResHandler is the file handler object
@@ -59,8 +59,10 @@ func (rh ResHandler) Append(toWrite string) (bool, error) {
 }
 
 // Close the file handler
-func (rh ResHandler) Close() {
-	rh.Resource.Close()
+func (rh ResHandler) Close() error {
+	err := rh.Resource.Close()
+
+	return err
 }
 
 func main() {
