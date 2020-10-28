@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 )
 
 // FileManager with core behaviours
@@ -82,6 +83,19 @@ func (rh *ResHandler) ReadContent() []string {
 	return res
 }
 
+// GetOtherLines erase line containing substring
+func (rh *ResHandler) GetOtherLines(lines []string, content string) []string {
+	var res []string
+
+	for _, v := range lines {
+		if !strings.Contains(v, content) {
+			res = append(res, v)
+		}
+	}
+
+	return res
+}
+
 // WriteLines write file line by line
 func (rh *ResHandler) WriteLines(lines []string) {
 	dw := bufio.NewWriter(rh.Resource)
@@ -122,4 +136,15 @@ func main() {
 	o.Open(os.O_APPEND | os.O_CREATE | os.O_WRONLY)
 	o.WriteLines([]string{"one", "two", "three", "four"})
 	o.Close()
+
+	// 4 - delete line and print content
+	o.Open(os.O_RDONLY)
+	lines = o.GetOtherLines(lines, "two")
+	o.WriteLines(lines)
+	o.Close()
+
+	o.Open(os.O_RDONLY)
+	lines = o.ReadContent()
+	o.Close()
+
 }
