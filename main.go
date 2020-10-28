@@ -10,10 +10,10 @@ import (
 
 // FileManager with core behaviours
 type FileManager interface {
-        Open(int) error
+	Open(int) error
 	Append(string) (bool, error)
-        ReadContent() []string
-        WriteLines([]string)
+	ReadContent() []string
+	WriteLines([]string)
 	Close() error
 }
 
