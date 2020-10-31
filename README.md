@@ -13,8 +13,8 @@ o.WriteLine("demo line 1")
 o.WriteLine("demo line 2")
 o.WriteLine("demo line 3")
 
-// Then remove one line
-// o.DeleteLine("2")
+// Then remove one line, that one containing "2"
+o.DeleteLine("2")
 
 ```
 
