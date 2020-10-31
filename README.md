@@ -5,7 +5,7 @@ File handling library - push, append, delete content.
 Simplifying file management, building a file instance, opening and operating on its content.
 
 #### Example
-Writing a demo log file, appending IP address, then deleting all entries containing given IP
+Writing a demo log file appending IP address; then deleting all entries containing given IP
 
 ```go
 package main
@@ -23,7 +23,7 @@ func main() {
     fg.WriteLine("102.102.102.102")
     fg.WriteLine("101.101.101.101")
 	
-    // Then remove one line, that one containing given ip address
+    // Then remove all the lines containing given ip address
     fg.DeleteLine("101.101.101.101")
 }
 ```
