@@ -144,6 +144,7 @@ func (rh ResHandler) DeleteLine(content string) error {
 
 	if err != nil {
 		log.Println(err)
+		return err
 	}
 
 	rh.close()
