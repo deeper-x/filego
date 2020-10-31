@@ -37,7 +37,7 @@ $ cat ./logs/access.log
 
 ```
 
-#### Test
+#### Test [WIP]
 ```sh
 $ make test
 ```
