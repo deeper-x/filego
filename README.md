@@ -1,21 +1,20 @@
 File handling library - push, append, delete content.
 [WIP]
 
-###Rationale 
+### Rationale 
 
 Simplifying file management, building a file instance, opening and operating on its content.
 
 ```go
-fh := filego.New("file.txt")
+o := manager.New("./assets/file_demo.txt")
 
-fh.Open()
-defer fh.Close()
+// add lines, one by one
+o.WriteLine("demo line 1")
+o.WriteLine("demo line 2")
+o.WriteLine("demo line 3")
 
-// Methods should be something like:
-fh.Append("last line") // add to the tail
-fh.Push("first line") // add to the head
-fh.Pop() // remove first line
-fm.RemoveLine("some") // remove line containing string "some"
+// Then remove one line
+// o.DeleteLine("2")
 
 ```
 
