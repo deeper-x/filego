@@ -1,4 +1,4 @@
-package filego
+package main
 
 import (
 	"bufio"
@@ -7,6 +7,10 @@ import (
 	"os"
 	"strings"
 )
+
+func main() {
+
+}
 
 // FileManager with core behaviours
 type FileManager interface {
@@ -100,7 +104,6 @@ func (rh *ResHandler) writeLines(lines []string) error {
 	dw := bufio.NewWriter(rh.Resource)
 
 	for _, v := range lines {
-		log.Println("writing", v)
 		_, err := dw.WriteString(v + "\n")
 		if err != nil {
 			log.Println(err)
