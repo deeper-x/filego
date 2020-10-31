@@ -37,7 +37,16 @@ $ cat ./logs/access.log
 
 ```
 
-#### Test [WIP]
+#### Unit Test 
 ```sh
-$ make test
+~/go/src/github.com/deeper-x/filego  (master)$ make test
+go test -v -cover ./...
+=== RUN   TestWriteLine
+--- PASS: TestWriteLine (0.00s)
+=== RUN   TestDeleteLine
+--- PASS: TestDeleteLine (0.00s)
+PASS
+coverage: 9.8% of statements
+ok  	github.com/deeper-x/filego	(cached)	coverage: 9.8% of statements
+
 ```
