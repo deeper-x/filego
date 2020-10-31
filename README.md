@@ -13,8 +13,8 @@ package main
 import "github.com/deeper-x/filego"
 
 func main() {
-	fg := filego.New("./logs/access.log")
-
+    fg := filego.New("./logs/access.log")
+    
     // add lines, one by one
     fg.WriteLine("100.100.100.100")
     fg.WriteLine("101.101.101.101")
