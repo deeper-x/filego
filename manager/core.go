@@ -36,8 +36,8 @@ func New(path string) ResHandler {
 }
 
 // open file resource
-func (rh *ResHandler) open(dsc int) error {
-	f, err := os.OpenFile(rh.Path, dsc, rh.Mode)
+func (rh *ResHandler) open(descr int) error {
+	f, err := os.OpenFile(rh.Path, descr, rh.Mode)
 
 	if err != nil {
 		log.Println(err)
@@ -73,17 +73,13 @@ func (rh ResHandler) append(toWrite string) (bool, error) {
 func (rh *ResHandler) readContent() []string {
 	var res []string
 
-	rh.Descriptor = os.O_RDONLY
 	scanner := bufio.NewScanner(rh.Resource)
-
 	scanner.Split(bufio.ScanLines)
 
 	for scanner.Scan() {
-		log.Println("reading:", scanner.Text())
 		res = append(res, scanner.Text())
 	}
 
-	log.Println("res is", res)
 	return res
 }
 
@@ -101,19 +97,25 @@ func (rh *ResHandler) getOtherLines(lines []string, content string) []string {
 }
 
 // writeLines write file line by line
-func (rh *ResHandler) writeLines(lines []string) {
+func (rh *ResHandler) writeLines(lines []string) error {
 	dw := bufio.NewWriter(rh.Resource)
 
 	for _, v := range lines {
-		_, _ = dw.WriteString(v + "\n")
+		log.Println("writing", v)
+		_, err := dw.WriteString(v + "\n")
+		if err != nil {
+			log.Println(err)
+			return err
+		}
 	}
 
 	dw.Flush()
+	return nil
 }
 
 // getLinesToSave returns lines not to be deleted
 func (rh ResHandler) getLinesToSave(toDel string) []string {
-	rh.open(os.O_RDWR)
+	rh.open(os.O_RDONLY)
 	allLines := rh.readContent()
 	linesToSave := rh.getOtherLines(allLines, toDel)
 	rh.close()
@@ -134,8 +136,14 @@ func (rh ResHandler) DeleteLine(content string) error {
 	// o.Close()
 
 	linesToSave := rh.getLinesToSave(content)
-	rh.open(os.O_RDWR | os.O_CREATE | os.O_TRUNC)
-	rh.writeLines(linesToSave)
+	rh.open(os.O_WRONLY | os.O_CREATE | os.O_TRUNC)
+
+	err := rh.writeLines(linesToSave)
+
+	if err != nil {
+		log.Println(err)
+	}
+
 	rh.close()
 
 	return nil
@@ -157,7 +165,7 @@ func (rh ResHandler) WriteLine(inLine string) error {
 	// }
 
 	// o.Close()
-	rh.open(os.O_APPEND | os.O_CREATE | os.O_WRONLY)
+	rh.open(os.O_WRONLY | os.O_CREATE | os.O_APPEND)
 
 	_, err := rh.append(inLine)
 	if err != nil {
