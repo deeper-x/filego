@@ -16,11 +16,11 @@ func main() {
 	fg := filego.New("./logs/access.log")
 
 	// add lines, one by one
-	fg.WriteLine("100.100.100.100")
-	fg.WriteLine("101.101.101.101")
-	fg.WriteLine("102.102.102.102")
+    fg.WriteLine("100.100.100.100")
     fg.WriteLine("101.101.101.101")
-	fg.WriteLine("102.102.102.102")
+    fg.WriteLine("102.102.102.102")
+    fg.WriteLine("101.101.101.101")
+    fg.WriteLine("102.102.102.102")
     fg.WriteLine("101.101.101.101")
 	
 	// Then remove one line, that one containing given ip address
