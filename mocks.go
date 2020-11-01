@@ -1,4 +1,4 @@
-package main
+package filego
 
 import (
 	reflect "reflect"

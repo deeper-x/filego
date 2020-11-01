@@ -1,4 +1,4 @@
-package main
+package filego
 
 import (
 	"bufio"
@@ -7,10 +7,6 @@ import (
 	"os"
 	"strings"
 )
-
-func main() {
-
-}
 
 // FileManager with core behaviours
 type FileManager interface {
