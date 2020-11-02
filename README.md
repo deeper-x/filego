@@ -16,12 +16,12 @@ func main() {
     fg := filego.New("./logs/access.log")
 
     // add lines, one by one
-    fg.WriteLine("100.100.100.100")
-    fg.WriteLine("101.101.101.101")
-    fg.WriteLine("102.102.102.102")
-    fg.WriteLine("101.101.101.101")
-    fg.WriteLine("102.102.102.102")
-    fg.WriteLine("101.101.101.101")
+    fg.WriteLine("Access from 100.100.100.100")
+    fg.WriteLine("Access from 101.101.101.101")
+    fg.WriteLine("Access from 102.102.102.102")
+    fg.WriteLine("Access from 101.101.101.101")
+    fg.WriteLine("Access from 102.102.102.102")
+    fg.WriteLine("Access from 101.101.101.101")
 	
     // Then remove all the lines containing given ip address
     fg.DeleteLine("101.101.101.101")
